@@ -3,13 +3,16 @@ import 'package:demo_dessert_app/core/models/api_responses/single_dessert_respon
 import 'package:demo_dessert_app/core/models/dessert.dart';
 import 'package:demo_dessert_app/core/models/dessert_detail.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final dessertService = StateProvider((ref) => DessertService());
 
 class DessertService {
-  final network = Dio();
+  final _network = Dio();
 
   Future<List<Dessert>> getAllDesserts() async {
     try {
-      final response = await network.get(UrlConfig.dessertUrl);
+      final response = await _network.get(UrlConfig.dessertUrl);
       return SingleDessertResponse.fromJson(response.data).meals;
     } on DioException {
       throw "An error occurred";
@@ -18,7 +21,7 @@ class DessertService {
 
   Future<DessertDetail> getSingleDessert(String dessertId) async {
     try {
-      final response = await network.get(UrlConfig.desertDetail(dessertId));
+      final response = await _network.get(UrlConfig.desertDetail(dessertId));
       final detail = SingleDessertResponse.fromJson(
         response.data,
       ).meals.firstOrNull;
