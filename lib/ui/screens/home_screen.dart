@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:demo_dessert_app/core/constants/url_config.dart';
 import 'package:demo_dessert_app/core/models/dessert.dart';
 import 'package:demo_dessert_app/core/models/states/app_state.dart';
 import 'package:demo_dessert_app/ui/providers/dessert_list_provider.dart';
@@ -25,45 +27,82 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("Dessert App"),
-          const SizedBox(height: 8),
-          Text("Learn to prepare desserts from our amazing recipes."),
-          const SizedBox(height: 20),
-          TextFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(200),
-                borderSide: BorderSide(color: Colors.grey),
-              ),
-              isDense: true,
-              fillColor: Colors.white,
-              filled: true,
-              prefixIcon: const Icon(Icons.search),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // State Machine:
-          Consumer(
-            builder: (_, ref, __) {
-              final state = ref.watch(dessertListProvider);
-              return switch (state) {
-                InitialAppState() => const BaseStateWidget(),
-                LoadingAppState() =>
-                  const Center(child: CupertinoActivityIndicator()),
-                FailureAppState() => BaseStateWidget(message: state.error),
-                SuccessAppState<List<Dessert>>() => GridView.count(
-                    crossAxisCount: 2,
-                    children: state.data.map((e) {
-                      return DessertCard(dessert: e);
-                    }).toList(),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                children: const [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Dessert App",
+                          style: TextStyle(
+                              fontSize: 30, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "Learn to prepare desserts from our amazing recipes.",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
                   ),
-              };
-            },
-          )
-        ],
+                  SizedBox(width: 20),
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: CachedNetworkImageProvider(
+                      UrlConfig.defaultMemojiImage,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextFormField(
+                onChanged: (value) =>
+                    ref.read(dessertListProvider.notifier).filter(value),
+                decoration: InputDecoration(
+                  hintText: "Search desserts",
+                  suffixIcon: const Icon(Icons.search, size: 30),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // State Machine:
+            Expanded(
+              child: Consumer(
+                builder: (_, ref, __) {
+                  final state = ref.watch(dessertListProvider);
+                  return switch (state) {
+                    InitialAppState() => const BaseStateWidget(),
+                    LoadingAppState() => const Center(
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    FailureAppState() => BaseStateWidget(message: state.error),
+                    SuccessAppState<List<Dessert>>() => GridView.count(
+                        physics: BouncingScrollPhysics(),
+                        padding: EdgeInsets.all(20),
+                        crossAxisSpacing: 20,
+                        mainAxisSpacing: 30,
+                        childAspectRatio: 1 / 1.15,
+                        crossAxisCount: 2,
+                        children: state.data.map((e) {
+                          return DessertCard(dessert: e);
+                        }).toList(),
+                      ),
+                  };
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
