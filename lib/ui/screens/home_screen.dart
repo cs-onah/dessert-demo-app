@@ -31,11 +31,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                children: const [
+                children: [
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +42,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         Text(
                           "Dessert App",
                           style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.bold),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.amber[600]!,
+                          ),
                         ),
                         SizedBox(height: 4),
                         Text(
