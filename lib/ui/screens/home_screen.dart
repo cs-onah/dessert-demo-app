@@ -1,4 +1,9 @@
+import 'package:demo_dessert_app/core/models/dessert.dart';
+import 'package:demo_dessert_app/core/models/states/app_state.dart';
 import 'package:demo_dessert_app/ui/providers/dessert_list_provider.dart';
+import 'package:demo_dessert_app/ui/widgets/base_state_widget.dart';
+import 'package:demo_dessert_app/ui/widgets/dessert_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,20 +38,33 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 borderRadius: BorderRadius.circular(200),
                 borderSide: BorderSide(color: Colors.grey),
               ),
+              isDense: true,
               fillColor: Colors.white,
               filled: true,
+              prefixIcon: const Icon(Icons.search),
             ),
           ),
           const SizedBox(height: 20),
-          GridView.count(crossAxisCount: 2,
-            children: [
-
-            ],
-          ),
-
+          // State Machine:
+          Consumer(
+            builder: (_, ref, __) {
+              final state = ref.watch(dessertListProvider);
+              return switch (state) {
+                InitialAppState() => const BaseStateWidget(),
+                LoadingAppState() =>
+                  const Center(child: CupertinoActivityIndicator()),
+                FailureAppState() => BaseStateWidget(message: state.error),
+                SuccessAppState<List<Dessert>>() => GridView.count(
+                    crossAxisCount: 2,
+                    children: state.data.map((e) {
+                      return DessertCard(dessert: e);
+                    }).toList(),
+                  ),
+              };
+            },
+          )
         ],
       ),
     );
   }
 }
-
