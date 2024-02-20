@@ -3,6 +3,7 @@ import 'package:demo_dessert_app/core/models/dessert.dart';
 import 'package:demo_dessert_app/core/models/states/app_state.dart';
 import 'package:demo_dessert_app/ui/providers/dessert_detail_provider.dart';
 import 'package:demo_dessert_app/ui/widgets/base_state_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,7 @@ class DessertDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _DessertDetailScreenState extends ConsumerState<DessertDetailScreen> {
-  String get dessertId => widget.dessert.idMeal!;
+  String get dessertId => widget.dessert.idMeal ?? "-1";
 
   @override
   void initState() {
@@ -31,8 +32,24 @@ class _DessertDetailScreenState extends ConsumerState<DessertDetailScreen> {
     return Scaffold(
       body: switch (model) {
         InitialAppState() => BaseStateWidget(),
-        LoadingAppState() => BaseStateWidget(),
-        FailureAppState() => BaseStateWidget(),
+        LoadingAppState() => Column(
+            children: [
+              DessertImageWidget(dessert: widget.dessert),
+              Expanded(child: Center(child: CupertinoActivityIndicator())),
+            ],
+          ),
+        FailureAppState() => Column(
+            children: [
+              DessertImageWidget(dessert: widget.dessert),
+              Expanded(
+                child: Center(
+                  child: BaseStateWidget(
+                    message: "Failed to fetch product details",
+                  ),
+                ),
+              ),
+            ],
+          ),
         SuccessAppState() => DessertImageWidget(dessert: model.data),
       },
     );
@@ -49,6 +66,8 @@ class DessertImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           height: 250,
@@ -69,12 +88,11 @@ class DessertImageWidget extends StatelessWidget {
               SafeArea(
                 child: Container(
                   margin: EdgeInsets.all(16),
-                  padding: EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: Icon(Icons.arrow_back_outlined, color: Colors.black),
+                  child: BackButton(onPressed: Navigator.of(context).pop),
                 ),
               ),
             ],
@@ -82,18 +100,12 @@ class DessertImageWidget extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(),
-              Text(
-                "${dessert.strMeal}",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          child: Text(
+            "${dessert.strMeal}",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         )
       ],
