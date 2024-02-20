@@ -19,6 +19,8 @@ class DessertListProvider extends StateNotifier<AppState<List<Dessert>>> {
       allDesserts = res.where((e) {
         return !e.strMeal.isNullOrEmpty && !e.idMeal.isNullOrEmpty;
       }).toList();
+      // sort alphabetically
+      allDesserts.sort((a, b) => a.strMeal!.compareTo(b.strMeal!));
       setSuccessState(allDesserts);
       return;
     } catch (error) {

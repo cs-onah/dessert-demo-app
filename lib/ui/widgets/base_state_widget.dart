@@ -14,7 +14,7 @@ class BaseStateWidget extends StatelessWidget {
       children: [
         const Row(), // stretches column horizontally
         Icon(
-          isEmpty ? Icons.search_off : Icons.wifi_tethering_error,
+          isEmpty ? Icons.search_off : Icons.error_outline,
           size: 200,
           color: Colors.grey[700],
         ),
