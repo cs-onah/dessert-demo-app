@@ -40,7 +40,7 @@ class DessertListProvider extends StateNotifier<AppState<List<Dessert>>> {
   setSuccessState(List<Dessert> desserts){
     final queryResult = desserts.where((element) {
       if(query.isNullOrEmpty) return true;
-      return (element.strMeal ?? "").toLowerCase().contains(query!);
+      return (element.strMeal ?? "").toLowerCase().contains(query!.toLowerCase());
     }).toList();
     state = SuccessAppState(List.from(queryResult));
   }
