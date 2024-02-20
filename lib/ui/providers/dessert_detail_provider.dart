@@ -11,13 +11,19 @@ class DessertDetailProvider extends StateNotifier<AppState<DessertDetail>> {
   DessertService get service => ref.read(dessertService);
 
   Future getDessert() async {
-    try{
+    try {
+      state = LoadingAppState();
       final res = await service.getSingleDessert(dessertId);
       state = SuccessAppState(res);
-    } catch(error){
-      if(state is SuccessAppState<DessertDetail>) return;
+    } catch (error) {
+      if (state is SuccessAppState<DessertDetail>) return;
       state = FailureAppState(error);
     }
     return;
   }
 }
+
+final dessertDetailProvider = StateNotifierProvider.family<
+    DessertDetailProvider,
+    AppState<DessertDetail>,
+    String>((ref, dessertId) => DessertDetailProvider(ref, dessertId));

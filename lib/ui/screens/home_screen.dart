@@ -33,37 +33,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Dessert App",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.amber[600]!,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "Learn to prepare desserts from our amazing recipes.",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: CachedNetworkImageProvider(
-                      UrlConfig.defaultMemojiImage,
-                    ),
-                  ),
-                ],
-              ),
+              child: _Header(),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -106,6 +76,45 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Dessert App",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.amber[600]!,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                "Learn to prepare desserts from our amazing recipes.",
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: 20),
+        CircleAvatar(
+          radius: 30,
+          backgroundImage: CachedNetworkImageProvider(
+            UrlConfig.defaultMemojiImage,
+          ),
+        ),
+      ],
     );
   }
 }
