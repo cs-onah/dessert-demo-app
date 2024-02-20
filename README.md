@@ -2,7 +2,7 @@
 
 Demo application for assessment
 
-Flutter Version: 3.7.0
+Flutter Version: 3.16.5
 
 ## Screenshot
 <p align="center">
