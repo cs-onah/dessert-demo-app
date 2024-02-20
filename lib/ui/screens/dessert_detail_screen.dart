@@ -60,7 +60,7 @@ class _DessertDetailScreenState extends ConsumerState<DessertDetailScreen> {
                 child: ListView(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   children: [
-                    if (!model.data.strInstructions.isNullOrEmpty)
+                    if (!model.data.strYoutube.isNullOrEmpty)
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton.icon(
