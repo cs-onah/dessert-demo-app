@@ -1,6 +1,7 @@
 import 'package:demo_dessert_app/core/models/dessert.dart';
 import 'package:demo_dessert_app/core/models/states/app_state.dart';
 import 'package:demo_dessert_app/core/services/dessert_service.dart';
+import 'package:demo_dessert_app/core/utils/string_extension.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DessertListProvider extends StateNotifier<AppState<List<Dessert>>> {
@@ -49,7 +50,3 @@ final dessertListProvider =
     StateNotifierProvider<DessertListProvider, AppState<List<Dessert>>>(
   (ref) => DessertListProvider(ref),
 );
-
-extension StringExt on String? {
-  bool get isNullOrEmpty => this == null || this!.trim() == "";
-}

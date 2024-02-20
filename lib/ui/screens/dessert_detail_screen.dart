@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:demo_dessert_app/core/models/dessert.dart';
 import 'package:demo_dessert_app/core/models/states/app_state.dart';
 import 'package:demo_dessert_app/ui/providers/dessert_detail_provider.dart';
-import 'package:demo_dessert_app/ui/providers/dessert_list_provider.dart';
+import 'package:demo_dessert_app/core/utils/string_extension.dart';
 import 'package:demo_dessert_app/ui/widgets/base_state_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +126,7 @@ class _DessertDetailScreenState extends ConsumerState<DessertDetailScreen> {
 
 class _DessertImageWidget extends StatelessWidget {
   final Dessert dessert;
-  const _DessertImageWidget({super.key, required this.dessert});
+  const _DessertImageWidget({required this.dessert});
 
   @override
   Widget build(BuildContext context) {

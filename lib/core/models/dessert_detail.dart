@@ -1,5 +1,5 @@
 import 'package:demo_dessert_app/core/models/dessert.dart';
-import 'package:demo_dessert_app/ui/providers/dessert_list_provider.dart';
+import 'package:demo_dessert_app/core/utils/string_extension.dart';
 
 class DessertDetail extends Dessert {
   dynamic strDrinkAlternate;
